@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="An advanced, opinionated frontend QA checklist for HTML/CSS/JS and Angular projects. Per-project progress, severity tagging, and exportable reports." />
+  <meta name="theme-color" content="#0b1020" />
+  <title>FE Checklist — Advanced Frontend QA Checklist</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="topbar">
+    <div class="topbar__inner">
+      <div class="brand">
+        <div class="brand__mark" aria-hidden="true">FE</div>
+        <div class="brand__text">
+          <h1>Frontend Checklist</h1>
+          <p>Ship-quality HTML / CSS / JS — and FE Frameworks when needed.</p>
+        </div>
+      </div>
+
+      <div class="topbar__controls">
+        <label class="control">
+          <span class="control__label">Project</span>
+          <select id="projectSelect" aria-label="Active project"></select>
+        </label>
+        <button class="btn" id="newProjectBtn" type="button" title="Create a new project profile">+ New</button>
+        <button class="btn" id="renameProjectBtn" type="button" title="Rename current project">Rename</button>
+        <button class="btn btn--danger" id="deleteProjectBtn" type="button" title="Delete current project">Delete</button>
+
+        <div class="divider" aria-hidden="true"></div>
+
+        <button class="btn" id="exportBtn" type="button" title="Download report as Markdown">Export</button>
+        <button class="btn" id="printBtn" type="button" title="Print or save as PDF">Print</button>
+        <button class="btn" id="resetBtn" type="button" title="Reset all checks for this project">Reset</button>
+        <button class="btn btn--icon" id="themeBtn" type="button" aria-label="Toggle theme" title="Toggle theme">
+          <span aria-hidden="true">◐</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="overall">
+      <div class="overall__bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="overallBar">
+        <div class="overall__fill" id="overallFill"></div>
+      </div>
+      <div class="overall__meta">
+        <span id="overallText">0 / 0 complete</span>
+        <span id="overallPct" class="overall__pct">0%</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar" aria-label="Categories">
+      <div class="sidebar__search">
+        <input
+          type="search"
+          id="searchInput"
+          placeholder="Search items…"
+          aria-label="Search checklist items"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="sidebar__filters" role="group" aria-label="Filters">
+        <fieldset class="chipset">
+          <legend>Severity</legend>
+          <label class="chip"><input type="checkbox" data-filter="severity" value="required" checked /> <span>Required</span></label>
+          <label class="chip"><input type="checkbox" data-filter="severity" value="recommended" checked /> <span>Recommended</span></label>
+          <label class="chip"><input type="checkbox" data-filter="severity" value="optional" checked /> <span>Optional</span></label>
+        </fieldset>
+        <fieldset class="chipset">
+          <legend>Status</legend>
+          <label class="chip"><input type="radio" name="statusFilter" data-filter="status" value="all" checked /> <span>All</span></label>
+          <label class="chip"><input type="radio" name="statusFilter" data-filter="status" value="pending" /> <span>Pending</span></label>
+          <label class="chip"><input type="radio" name="statusFilter" data-filter="status" value="done" /> <span>Done</span></label>
+        </fieldset>
+        <fieldset class="chipset">
+          <legend>Track</legend>
+          <label class="chip"><input type="checkbox" data-filter="track" value="core" checked /> <span>HTML / CSS / JS</span></label>
+          <label class="chip"><input type="checkbox" data-filter="track" value="react" /> <span>React</span></label>
+          <label class="chip"><input type="checkbox" data-filter="track" value="angular" /> <span>Angular</span></label>
+          <label class="chip"><input type="checkbox" data-filter="track" value="vue" /> <span>Vue</span></label>
+        </fieldset>
+      </div>
+
+      <nav class="catnav" id="categoryNav" aria-label="Jump to category"></nav>
+    </aside>
+
+    <main id="main" class="content">
+      <div id="emptyState" class="empty" hidden>
+        <p>No items match the current filters.</p>
+      </div>
+      <div id="categoryList"></div>
+
+      <footer class="footer">
+        <p>
+          A team-internal QA aid. Save a copy per project, share progress in PRs.
+        </p>
+      </footer>
+    </main>
+  </div>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
