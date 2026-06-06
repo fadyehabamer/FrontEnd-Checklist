@@ -2180,9 +2180,9 @@ function exportMarkdown() {
     lines.push(`## ${cat.title} — ${d} / ${t}`);
     lines.push("");
     cat.items.forEach((item) => {
-      const mark = isChecked(item.id) ? "x" : " ";
+      const mark = isChecked(item.id) ? "☑" : "☐";
       const sev = item.severity[0].toUpperCase() + item.severity.slice(1);
-      lines.push(`- [${mark}] **${item.title}** _(${sev})_`);
+      lines.push(`- ${mark} **${item.title}** _(${sev})_`);
       if (item.desc) lines.push(`  - ${item.desc}`);
     });
     lines.push("");

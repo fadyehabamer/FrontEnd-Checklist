@@ -641,7 +641,16 @@ a { color: var(--accent); }
   .item { break-inside: avoid; border-color: #ccc; }
   .item.is-done { background: #f3f3f3; }
   .category { break-inside: avoid; }
-  body { font-size: 11pt; }
+  body {
+    font-size: 11pt;
+    /* honor checkbox fills, is-done highlight, and severity colors in the PDF */
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  /* belt-and-suspenders: keep the checked state visible even if a browser
+     ignores color-adjust and drops the green fill (white check on white box) */
+  .item__check:checked { border-color: var(--success); }
+  .item__check:checked::after { border-color: #000; }
   .item__detail { display: block !important; }
   .category.is-collapsed .category__desc,
   .category.is-collapsed .items { display: block !important; }
