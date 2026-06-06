@@ -2161,11 +2161,26 @@ function escapeHtml(str) {
     .replaceAll("'", "&#039;");
 }
 
+// Escape for Markdown export. The checklist text contains literal HTML tags
+// (<title>, <script setup>, <style scoped>, …). Left raw, a Markdown previewer
+// hands them to the browser, which treats <title>/<script>/<style> as raw-text
+// elements and swallows everything after them — the report renders blank.
+// We entity-escape angle brackets/ampersands, and backslash-escape "*" so a
+// stray asterisk (e.g. "*ngFor") can't corrupt the **bold** wrappers. Quotes,
+// underscores and backticks are left alone: they read cleanly and render fine.
+function escapeMd(str) {
+  return String(str)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll("*", "\\*");
+}
+
 /* -------- export -------- */
 
 function exportMarkdown() {
   const lines = [];
-  lines.push(`# Frontend Checklist Report — ${state.currentProject}`);
+  lines.push(`# Frontend Checklist Report — ${escapeMd(state.currentProject)}`);
   lines.push("");
   lines.push(`_Generated ${new Date().toLocaleString()}_`);
   lines.push("");
@@ -2177,13 +2192,13 @@ function exportMarkdown() {
 
   visibleCategories().forEach((cat) => {
     const { done: d, total: t } = categoryProgress(cat);
-    lines.push(`## ${cat.title} — ${d} / ${t}`);
+    lines.push(`## ${escapeMd(cat.title)} — ${d} / ${t}`);
     lines.push("");
     cat.items.forEach((item) => {
       const mark = isChecked(item.id) ? "☑" : "☐";
       const sev = item.severity[0].toUpperCase() + item.severity.slice(1);
-      lines.push(`- ${mark} **${item.title}** _(${sev})_`);
-      if (item.desc) lines.push(`  - ${item.desc}`);
+      lines.push(`- ${mark} **${escapeMd(item.title)}** _(${sev})_`);
+      if (item.desc) lines.push(`  - ${escapeMd(item.desc)}`);
     });
     lines.push("");
   });
