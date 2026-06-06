@@ -640,7 +640,11 @@ a { color: var(--accent); }
   .topbar { position: static; border-bottom: 2px solid #000; }
   .item { break-inside: avoid; border-color: #ccc; }
   .item.is-done { background: #f3f3f3; }
-  .category { break-inside: avoid; }
+  /* Categories are taller than a page — let them split across pages.
+     break-inside: avoid here pushed the whole first category to page 2,
+     leaving page 1 blank below the header. */
+  .category { break-inside: auto; }
+  .category__head { break-after: avoid; } /* don't strand a heading at a page bottom */
   body {
     font-size: 11pt;
     /* honor checkbox fills, is-done highlight, and severity colors in the PDF */
